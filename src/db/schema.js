@@ -1,4 +1,4 @@
-import { pgTable, pgEnum, serial, text, integer, timestamp, jsonb } from 'drizzle-orm/pg-core';
+import { integer, jsonb, pgEnum, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 // Match status enum with scheduled, live, and finished values
 export const matchStatusEnum = pgEnum('match_status', ['scheduled', 'live', 'finished']);
@@ -21,8 +21,8 @@ export const matches = pgTable('matches', {
 export const commentary = pgTable('commentary', {
   id: serial('id').primaryKey(),
   matchId: integer('match_id')
-    .references(() => matches.id, { onDelete: 'cascade' })
-    .notNull(),
+    .notNull()
+    .references(() => matches.id),
   minute: integer('minute'),
   sequence: integer('sequence').notNull(),
   period: text('period'),
