@@ -1,4 +1,5 @@
-import { pgTable, pgEnum, serial, text, integer, timestamp, jsonb, index } from 'drizzle-orm/pg-core';
+import { pgTable, pgEnum, serial, text, integer, timestamp, jsonb, index, check } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
 // Match status enum with scheduled, live, and finished values
 export const matchStatusEnum = pgEnum('match_status', ['scheduled', 'live', 'finished']);
@@ -15,7 +16,11 @@ export const matches = pgTable('matches', {
   homeScore: integer('home_score').default(0).notNull(),
   awayScore: integer('away_score').default(0).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-});
+}, (table) => [
+  check('end_time_after_start', sql`end_time IS NULL OR end_time > start_time`),
+  check('non_negative_home_score', sql`home_score >= 0`),
+  check('non_negative_away_score', sql`away_score >= 0`),
+]);
 
 // Commentary table
 export const commentary = pgTable('commentary', {

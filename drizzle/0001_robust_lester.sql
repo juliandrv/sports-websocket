@@ -1,1 +1,1 @@
-CREATE INDEX "commentary_match_id_idx" ON "commentary" USING btree ("match_id");
+-- No-op: commentary_match_id_idx already created in 0000_cheerful_vance_astro

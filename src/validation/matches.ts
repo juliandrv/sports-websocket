@@ -7,10 +7,8 @@ export const MATCH_STATUS = {
   FINISHED: "finished",
 } as const;
 
-// Helper to check if a string is a valid ISO date
-const isoDateString = z.string().refine((val) => !isNaN(Date.parse(val)), {
-  message: "Invalid ISO date string",
-});
+// Helper to check if a string is a valid ISO datetime
+const isoDateString = z.iso.datetime();
 
 // Schema to validate list matches query parameters
 export const listMatchesQuerySchema = z.object({
